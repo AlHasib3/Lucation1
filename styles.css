@@ -1,30 +1,54 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    text-align: center;
-    padding: 50px;
-  }
-  
-  h1 {
-    color: #007BFF;
-  }
-  
-  button {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  #demo {
-    margin-top: 20px;
-    font-size: 18px;
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location1</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Welcome to Location1</h1>
+    <button onclick="addUser()">Add User</button>
+    <button onclick="getUsers()">Get Users</button>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDiKFX20cKkhHU0OkAVw6Dv45lWUT7oz5Y",
+            authDomain: "lucation1t.firebaseapp.com",
+            projectId: "lucation1t",
+            storageBucket: "lucation1t.firebasestorage.app",
+            messagingSenderId: "36109638018",
+            appId: "1:36109638018:web:04733eb656519311e7979b",
+            measurementId: "G-9BK23ZBMT6"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Function to add a user
+        async function addUser() {
+            try {
+                const docRef = await addDoc(collection(db, "users_data"), {
+                    name: "John Doe",
+                    age: 25
+                });
+                console.log("Document written with ID: ", docRef.id);
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
+        }
+
+        // Function to get users
+        async function getUsers() {
+            const querySnapshot = await getDocs(collection(db, "users_data"));
+            querySnapshot.forEach((doc) => {
+                console.log(`${doc.id} =>`, doc.data());
+            });
+        }
+    </script>
+</body>
+</html>
